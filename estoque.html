@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FRUIT MASTER - Cadastro de Estoque</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="inicio.css" />
+    <link rel="stylesheet" href="estoque.css" />
+    <link rel="stylesheet" href="dropdown.css" />
+  </head>
+  <body>
+    <header>
+      <img src="imagens/logo1.png" />
+      <h1>Fruit Master</h1>
+      <div class="dropdown">
+        <button class="dropbtn">Serviços</button>
+        <div class="dropdown-content">
+          <a href="inicio.html">Home</a>
+          <a href="usuarios.html">Usuários</a>
+          <a href="index.html">Sair</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Locais -->
+    <div class="locais">
+      <h1>Cadastrar Local de Estoque</h1>
+      <input type="text" id="localId" placeholder="ID do Local" />
+      <input type="text" id="localNome" placeholder="Nome do Local" />
+      <button onclick="cadastrarLocal()">Cadastrar</button>
+      <h2>Locais Cadastrados</h2>
+      <table id="locais">
+        <tr>
+          <th>ID</th>
+          <th>Nome</th>
+          <th>Ação</th>
+        </tr>
+        <!-- Locais serão inseridos aqui via JavaScript -->
+      </table>
+    </div>
+    <br />
+    <div class="links">
+      <a href="inicio.html">Início</a>
+      <a href="cadastro.html">Cadastrar Produto</a>
+    </div>
+    <footer>
+      <p>
+        &copy; 2024 FRUIT-MASTER fazenda urbana. Todos os direitos reservados.
+      </p>
+    </footer>
+    <script>
+      const locais = JSON.parse(localStorage.getItem("locais")) || [];
+
+      const tabelaLocais = document.getElementById("locais");
+      locais.forEach((local) => {
+        const row = tabelaLocais.insertRow();
+        row.insertCell(0).innerText = local.id;
+        row.insertCell(1).innerText = local.nome;
+        row.insertCell(
+          2
+        ).innerHTML = `<button onclick="excluirLocal('${local.id}')">Excluir</button>`;
+      });
+
+      function cadastrarLocal() {
+        const id = document.getElementById("localId").value;
+        const nome = document.getElementById("localNome").value;
+        locais.push({ id, nome });
+        localStorage.setItem("locais", JSON.stringify(locais));
+        location.reload();
+      }
+
+      function excluirLocal(id) {
+        const novosLocais = locais.filter((local) => local.id !== id);
+        localStorage.setItem("locais", JSON.stringify(novosLocais));
+        location.reload();
+      }
+    </script>
+  </body>
+</html>

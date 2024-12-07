@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cadastro de Local de Estoque</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="inicio.css" />
+    <link rel="stylesheet" href="estoque.css" />
+    <link rel="stylesheet" href="dropdown.css" />
+  </head>
+  <body>
+    <header>
+      <img src="imagens/logo1.png" />
+      <h1>Fruit Master</h1>
+      <div class="dropdown">
+        <button class="dropbtn">Serviços</button>
+        <div class="dropdown-content">
+          <a href="inicio.html">Home</a>
+          <a href="usuarios.html">Usuários</a>
+          <a href="index.html">Sair</a>
+        </div>
+      </div>
+    </header>
+
+    <div id="estoque" class="section" style="display">
+      <h2>Estoque</h2>
+      <form id="localForm">
+        <h3>Cadastrar Local</h3>
+        <div class="form-group">
+          <label for="localId">ID do Local:</label>
+          <input type="number" id="localId" required />
+        </div>
+        <div class="form-group">
+          <label for="localName">Nome do Local:</label>
+          <input type="text" id="localName" required />
+        </div>
+        <button type="submit">Cadastrar Local</button>
+      </form>
+
+      <h3>Locais Cadastrados</h3>
+      <ul id="localList"></ul>
+    </div>
+    <footer>
+      <p>
+        &copy; 2024 FRUIT-MASTER fazenda urbana. Todos os direitos reservados.
+      </p>
+    </footer>
+    <script src="estoque.js"></script>
+  </body>
+</html>

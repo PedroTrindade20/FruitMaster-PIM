@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FRUIT MASTER - Cadastro de Produtos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="inicio.css" />
+    <link rel="stylesheet" href="estoque.css" />
+    <link rel="stylesheet" href="dropdown.css" />
+
+    <link rel="stylesheet" href="cadastro.css" />
+  </head>
+  <body>
+    <header>
+      <img src="imagens/logo1.png" />
+      <h1>Fruit Master</h1>
+      <div class="dropdown">
+        <button class="dropbtn">Serviços</button>
+        <div class="dropdown-content">
+          <a href="inicio.html">Home</a>
+          <a href="usuarios.html">Usuários</a>
+          <a href="index.html">Sair</a>
+        </div>
+      </div>
+    </header>
+    <div class="cadastros">
+      <h1>Cadastrar Produto</h1>
+      <input type="text" id="produtoId" placeholder="ID do Produto" />
+      <input type="text" id="produtoNome" placeholder="Nome do Produto" />
+      <input type="number" id="produtoQuantidade" placeholder="Quantidade" />
+      <select id="localSelect"></select>
+      <button onclick="cadastrarProduto()">Cadastrar</button>
+
+      <h2>Produtos Cadastrados</h2>
+      <table id="produtosCadastro">
+        <tr>
+          <th>ID</th>
+          <th>Nome</th>
+          <th>Quantidade</th>
+          <th>Local de Estoque</th>
+          <th>Ação</th>
+        </tr>
+      </table>
+
+      <h2>Movimentação de Produtos</h2>
+      <select id="movimentacaoSelect"></select>
+      <button onclick="adicionarQuantidade()">Adicionar</button>
+      <button onclick="removerQuantidade()">Remover</button>
+
+      <h2>Registro de Movimentações</h2>
+      <ul id="registroMovimentacoes"></ul>
+    </div>
+    <br />
+    <div class="links">
+      <a href="inicio.html">Início</a>
+      <a href="estoque.html">Cadastrar Local de Estoque</a>
+    </div>
+    <footer>
+      <p>
+        &copy; 2024 FRUIT-MASTER fazenda urbana. Todos os direitos reservados.
+      </p>
+    </footer>
+    <script>
+      const produtos = JSON.parse(localStorage.getItem("produtos")) || [];
+      const locais = JSON.parse(localStorage.getItem("locais")) || [];
+
+      const tabelaProdutos = document.getElementById("produtosCadastro");
+      const selectLocal = document.getElementById("localSelect");
+      const selectMovimentacao = document.getElementById("movimentacaoSelect");
+      const registroMovimentacoes = document.getElementById(
+        "registroMovimentacoes"
+      );
+
+      // Preencher o select de locais e movimentação
+      locais.forEach((local) => {
+        const option = document.createElement("option");
+        option.value = local.id;
+        option.innerText = local.nome;
+        selectLocal.appendChild(option);
+        selectMovimentacao.appendChild(option.cloneNode(true));
+      });
+
+      // Função para atualizar a tabela de produtos
+      function atualizarTabela() {
+        tabelaProdutos.innerHTML = `
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Quantidade</th>
+                <th>Local de Estoque</th>
+                <th>Ação</th>
+            </tr>`;
+
+        produtos.forEach((produto) => {
+          const row = tabelaProdutos.insertRow();
+          row.insertCell(0).innerText = produto.id;
+          row.insertCell(1).innerText = produto.nome;
+          row.insertCell(2).innerText = produto.quantidade;
+          row.insertCell(3).innerText = produto.local;
+          row.insertCell(
+            4
+          ).innerHTML = `<button onclick="excluirProduto('${produto.id}')">Excluir</button>`;
+        });
+
+        // Atualiza o select de movimentação
+        selectMovimentacao.innerHTML = "";
+        produtos.forEach((produto) => {
+          const option = document.createElement("option");
+          option.value = produto.id;
+          option.innerText = produto.nome;
+          selectMovimentacao.appendChild(option);
+        });
+      }
+
+      // Inicializa a tabela ao carregar
+      atualizarTabela();
+
+      function cadastrarProduto() {
+        const id = document.getElementById("produtoId").value;
+        const nome = document.getElementById("produtoNome").value;
+        const quantidade = parseInt(
+          document.getElementById("produtoQuantidade").value
+        );
+        const local = selectLocal.value;
+
+        if (id && nome && !isNaN(quantidade) && quantidade > 0) {
+          produtos.push({ id, nome, quantidade, local });
+          localStorage.setItem("produtos", JSON.stringify(produtos));
+          atualizarTabela();
+        } else {
+          alert("Por favor, preencha todos os campos corretamente.");
+        }
+      }
+
+      function excluirProduto(id) {
+        const novosProdutos = produtos.filter((produto) => produto.id !== id);
+        localStorage.setItem("produtos", JSON.stringify(novosProdutos));
+        atualizarTabela();
+      }
+
+      function adicionarQuantidade() {
+        const id = selectMovimentacao.value;
+        const quantidade = parseInt(prompt("Quantidade a adicionar:"));
+        const produto = produtos.find((prod) => prod.id === id);
+
+        if (produto) {
+          if (!isNaN(quantidade) && quantidade > 0) {
+            produto.quantidade += quantidade;
+            localStorage.setItem("produtos", JSON.stringify(produtos));
+            registroMovimentacoes.innerHTML += `<li>Adicionado ${quantidade} ao produto ${produto.nome}</li>`;
+            atualizarTabela();
+          } else {
+            alert("Por favor, insira uma quantidade válida.");
+          }
+        }
+      }
+
+      function removerQuantidade() {
+        const id = selectMovimentacao.value;
+        const quantidade = parseInt(prompt("Quantidade a remover:"));
+        const produto = produtos.find((prod) => prod.id === id);
+
+        if (produto) {
+          if (!isNaN(quantidade) && quantidade > 0) {
+            if (produto.quantidade >= quantidade) {
+              produto.quantidade -= quantidade;
+              localStorage.setItem("produtos", JSON.stringify(produtos));
+              registroMovimentacoes.innerHTML += `<li>Removido ${quantidade} do produto ${produto.nome}</li>`;
+              atualizarTabela();
+            } else {
+              alert("Quantidade insuficiente!");
+            }
+          } else {
+            alert("Por favor, insira uma quantidade válida.");
+          }
+        }
+      }
+    </script>
+  </body>
+</html>

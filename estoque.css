@@ -1,0 +1,58 @@
+button {
+  padding: 10px 15px;
+  background-color: #04aa6d;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #3e8e41;
+}
+
+.locais {
+  margin: 50px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th,
+td {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+tr:hover {
+  background-color: #f1f1f1;
+}
+
+.links a {
+  background-color: #04aa6d;
+  font-size: 18px;
+  margin-left: 25%;
+  text-align: center;
+  margin-top: 10px;
+  text-decoration: none;
+  color: white;
+  padding: 10px 15px;
+}
+.links a:hover {
+  background-color: #3e8e41;
+}
+
+.locais input {
+  padding: 10px 15px;
+}
